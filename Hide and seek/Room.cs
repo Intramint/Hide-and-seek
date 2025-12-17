@@ -6,6 +6,11 @@ namespace Hide_and_seek
 {
     internal class Room : Location
     {
-        public string Decoration { get; private set; }
+        public Room (string name, string decoration) : base(name)
+        {
+            Decoration = decoration;
+        }
+
+        public string Decoration { get; }
     }
 }

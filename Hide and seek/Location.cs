@@ -11,7 +11,7 @@ namespace Hide_and_seek
             Name = name;
         }
         public string Name { get; private set; }
-        public Location[] Exits;
+        public required Location[] Exits;
 
         public virtual string Description
         {

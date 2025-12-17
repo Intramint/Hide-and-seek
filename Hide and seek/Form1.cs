@@ -5,6 +5,12 @@ namespace Hide_and_seek
         public Form1()
         {
             InitializeComponent();
+            CreateObjects();
+        }
+
+        private void CreateObjects()
+        {
+            //todo: initialize all locations
         }
     }
 }
