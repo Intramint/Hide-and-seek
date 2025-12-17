@@ -4,14 +4,29 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    abstract internal class Location
+    abstract class Location
     {
-        public string Name;
+        public Location(string name)
+        {
+            Name = name;
+        }
+        public string Name { get; private set; }
         public Location[] Exits;
 
-        public string Description()
+        public virtual string Description
         {
-            return Name;
+            get
+            {
+                string description = string.Format("Stoisz w: {0}. Widzisz wyjście do nasttępujących lokalizacji: ", Name);
+                for (int i = 0; i < Exits.Length; i++)
+                {
+                    description += " " + Exits[i].Name;
+                    if (i < Exits.Length - 1)
+                        description += ", ";
+                }
+                description += ".";
+                return description;
+            }
         }
         
     }
