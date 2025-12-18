@@ -4,14 +4,14 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    abstract class Location
+    public abstract class Location
     {
         public Location(string name)
         {
             Name = name;
         }
         public string Name { get; private set; }
-        public required Location[] Exits;
+        public Location[] Exits;
 
         public virtual string Description
         {

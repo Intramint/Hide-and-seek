@@ -4,8 +4,14 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    internal class RoomWithDoor : Room, IHasExteriorDoor
+    public class RoomWithDoor : Room, IHasExteriorDoor
     {
-        RoomWithDoor(string name, string decoration) : base(name, decoration) { }
+        public RoomWithDoor(string name, string decoration, string doorDescription) : base(name, decoration) 
+        {
+            DoorDescription = doorDescription;
+        }
+
+        public string DoorDescription { get; }
+        public Location DoorLocation { get; set; }
     }
 }

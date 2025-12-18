@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    internal class Room : Location
+    public class Room : Location
     {
         public Room (string name, string decoration) : base(name)
         {
@@ -12,5 +12,12 @@ namespace Hide_and_seek
         }
 
         public string Decoration { get; }
+        public override string Description
+        {
+            get 
+            {
+                return base.Description + " Widzisz tutaj " + Decoration;
+            }
+        }
     }
 }
