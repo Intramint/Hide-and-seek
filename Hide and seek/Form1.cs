@@ -10,11 +10,11 @@ namespace Hide_and_seek
 
         private void CreateObjects()
         {
-            RoomWithDoor livingRoom = new RoomWithDoor("Salon", "antyczny dywan", "dêbowe drzwi z mosiê¿n¹ klamk¹");
-            RoomWithDoor kitchen = new RoomWithDoor("Kuchnia", "nierdzewne stalowe sztuæce", "drzwi rozsuwane");
+            RoomWithDoor livingRoom = new RoomWithDoor("Salon", "antyczny dywan", "dêbowe drzwi z mosiê¿n¹ klamk¹", "za kanap¹");
+            RoomWithDoor kitchen = new RoomWithDoor("Kuchnia", "nierdzewne stalowe sztuæce", "drzwi rozsuwane", "w szafce");
             Room diningRoom = new Room("Jadalnia", "kryszta³owy ¿yrandol");
-            OutsideWithDoor frontYard = new OutsideWithDoor("Podwórko przed domem", false, "dêbowe drzwi z mosiê¿n¹ klamk¹");
-            OutsideWithDoor backYard = new OutsideWithDoor("Podwórko za domem", true, "drzwi rozsuwane");
+            OutsideWithDoor frontYard = new OutsideWithDoor("Podwórko przed domem", false, "dêbowe drzwi z mosiê¿n¹ klamk¹", "w krzakach");
+            OutsideWithDoor backYard = new OutsideWithDoor("Podwórko za domem", true, "drzwi rozsuwane", "na drzewie");
             Outside garden = new Outside("Ogród", false);
 
             livingRoom.Exits = [diningRoom];

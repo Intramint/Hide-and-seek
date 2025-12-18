@@ -4,9 +4,9 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    public class RoomWithDoor : Room, IHasExteriorDoor
+    public class RoomWithDoor : RoomWithHidingPlace, IHasExteriorDoor
     {
-        public RoomWithDoor(string name, string decoration, string doorDescription) : base(name, decoration) 
+        public RoomWithDoor(string name, string decoration, string doorDescription, string hidingPlace) : base(name, decoration, hidingPlace) 
         {
             DoorDescription = doorDescription;
         }
