@@ -13,5 +13,13 @@ namespace Hide_and_seek
 
         public string DoorDescription { get; }
         public Location DoorLocation { get; set; }
+
+        public override string Description
+        {
+            get
+            {
+                return string.Format("{0} oraz {1} prowadzące do {2}.", base.Description, DoorDescription, DoorLocation.Name);
+            }
+        }
     }
 }

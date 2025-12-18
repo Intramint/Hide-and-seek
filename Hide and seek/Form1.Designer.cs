@@ -28,17 +28,70 @@
         /// </summary>
         private void InitializeComponent()
         {
+            descriptionTextBox = new TextBox();
+            goHereButton = new Button();
+            goThroughDoorButton = new Button();
+            exitsComboBox = new ComboBox();
             SuspendLayout();
+            // 
+            // descriptionTextBox
+            // 
+            descriptionTextBox.Location = new Point(12, 12);
+            descriptionTextBox.Multiline = true;
+            descriptionTextBox.Name = "descriptionTextBox";
+            descriptionTextBox.Size = new Size(360, 186);
+            descriptionTextBox.TabIndex = 0;
+            // 
+            // goHereButton
+            // 
+            goHereButton.Location = new Point(12, 207);
+            goHereButton.Name = "goHereButton";
+            goHereButton.Size = new Size(101, 23);
+            goHereButton.TabIndex = 1;
+            goHereButton.Text = "Idź tutaj:";
+            goHereButton.UseVisualStyleBackColor = true;
+            goHereButton.Click += goHereButton_Click;
+            // 
+            // goThroughDoorButton
+            // 
+            goThroughDoorButton.Location = new Point(12, 236);
+            goThroughDoorButton.Name = "goThroughDoorButton";
+            goThroughDoorButton.Size = new Size(360, 23);
+            goThroughDoorButton.TabIndex = 2;
+            goThroughDoorButton.Text = "Przejdź przez drzwi";
+            goThroughDoorButton.UseVisualStyleBackColor = true;
+            goThroughDoorButton.Click += goThroughDoorButton_Click;
+            // 
+            // exitsComboBox
+            // 
+            exitsComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            exitsComboBox.FormattingEnabled = true;
+            exitsComboBox.Location = new Point(119, 207);
+            exitsComboBox.Name = "exitsComboBox";
+            exitsComboBox.Size = new Size(253, 23);
+            exitsComboBox.TabIndex = 3;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(384, 270);
+            Controls.Add(exitsComboBox);
+            Controls.Add(goThroughDoorButton);
+            Controls.Add(goHereButton);
+            Controls.Add(descriptionTextBox);
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "Form1";
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
+
+        private TextBox descriptionTextBox;
+        private Button goHereButton;
+        private Button goThroughDoorButton;
+        private ComboBox exitsComboBox;
     }
 }

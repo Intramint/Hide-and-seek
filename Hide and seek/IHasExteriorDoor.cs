@@ -7,6 +7,6 @@ namespace Hide_and_seek
     internal interface IHasExteriorDoor
     {
         string DoorDescription { get; }
-        Location DoorLocation { get; }
+        Location DoorLocation { get; set; }
     }
 }

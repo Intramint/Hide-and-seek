@@ -16,7 +16,7 @@ namespace Hide_and_seek
             get
             {
                 if (isHot)
-                    return base.Description + " Tutaj jest bardzo gorąco";
+                    return base.Description + " Tutaj jest bardzo gorąco.";
                 return base.Description;
             }
         }

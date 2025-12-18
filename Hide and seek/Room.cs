@@ -8,15 +8,15 @@ namespace Hide_and_seek
     {
         public Room (string name, string decoration) : base(name)
         {
-            Decoration = decoration;
+            this.decoration = decoration;
         }
 
-        public string Decoration { get; }
+        private string decoration;
         public override string Description
         {
             get 
             {
-                return base.Description + " Widzisz tutaj " + Decoration;
+                return base.Description + " Widzisz tutaj " + decoration;
             }
         }
     }

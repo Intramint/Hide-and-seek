@@ -17,10 +17,10 @@ namespace Hide_and_seek
         {
             get
             {
-                string description = string.Format("Stoisz w: {0}. Widzisz wyjście do nasttępujących lokalizacji: ", Name);
+                string description = string.Format("Stoisz w: {0}. Widzisz wyjście do następujących lokalizacji: ", Name);
                 for (int i = 0; i < Exits.Length; i++)
                 {
-                    description += " " + Exits[i].Name;
+                    description += Exits[i].Name;
                     if (i < Exits.Length - 1)
                         description += ", ";
                 }
