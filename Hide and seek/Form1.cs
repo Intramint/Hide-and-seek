@@ -33,11 +33,19 @@ namespace Hide_and_seek
 
             garden.Exits = [frontYard, backYard];
 
+            Random random = new Random();
+            opponent = new Opponent(frontYard, random);
+            for (int i = 0; i < 10; i++)
+                opponent.Move();
+            while (opponent.myLocation is not IHidingPlace)
+                opponent.Move();
+
             moveToANewLocation(livingRoom);
 
         }
 
         Location currentLocation { get; set; }
+        public Opponent opponent { get; private set; }
 
         private void moveToANewLocation(Location newLocation)
         {
@@ -55,6 +63,13 @@ namespace Hide_and_seek
             else
                 goThroughDoorButton.Visible = false;
 
+        }
+
+        public bool Check(Location location)
+        {
+            if (opponent.myLocation == location)
+                return true;
+            return false;
         }
 
         private void goHereButton_Click(object sender, EventArgs e)
