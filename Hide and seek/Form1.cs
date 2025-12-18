@@ -15,23 +15,35 @@ namespace Hide_and_seek
             Room diningRoom = new Room("Jadalnia", "kryszta³owy ¿yrandol");
             OutsideWithDoor frontYard = new OutsideWithDoor("Podwórko przed domem", false, "dêbowe drzwi z mosiê¿n¹ klamk¹", "w krzakach");
             OutsideWithDoor backYard = new OutsideWithDoor("Podwórko za domem", true, "drzwi rozsuwane", "na drzewie");
-            Outside garden = new Outside("Ogród", false);
+            OutsideWithHidingPlace garden = new OutsideWithHidingPlace("Ogród", false, "w szopie");
+            Room stairs = new Room("Schody", "drewniana porêcz");
+            RoomWithHidingPlace hallway = new RoomWithHidingPlace("Korytarz na górze", "obraz z psem", "w szafie œciennej");
+            RoomWithHidingPlace bigBedroom = new RoomWithHidingPlace("Du¿a sypialnia", "portret", "pod ³ó¿kiem");
+            RoomWithHidingPlace smallBedroom = new RoomWithHidingPlace("Ma³a sypialnia", "pami¹tka z wakacji", "pod ³ó¿kiem");
+            Room bathroom = new Room("£azienka", "lustro z ozdabian¹ ramk¹");
+            OutsideWithHidingPlace driveway = new OutsideWithHidingPlace("Droga dojazdowa", false, "w gara¿u");
 
-            livingRoom.Exits = [diningRoom];
-            livingRoom.DoorLocation = frontYard;
 
+
+
+            livingRoom.Exits = [diningRoom, stairs];
             kitchen.Exits = [diningRoom];
-            kitchen.DoorLocation = backYard;
-
             diningRoom.Exits = [livingRoom, kitchen];
+            frontYard.Exits = [backYard, garden, driveway];
+            backYard.Exits = [frontYard, garden, driveway];
+            garden.Exits = [frontYard, backYard];
+            stairs.Exits = [livingRoom, hallway];
+            hallway.Exits = [stairs, bigBedroom, smallBedroom, bathroom];
+            bigBedroom.Exits = [hallway];
+            smallBedroom.Exits = [hallway];
+            bathroom.Exits = [hallway];
+            driveway.Exits = [frontYard, backYard];
 
-            frontYard.Exits = [backYard, garden];
+            backYard.DoorLocation = kitchen;
+            kitchen.DoorLocation = backYard;
+            livingRoom.DoorLocation = frontYard;
             frontYard.DoorLocation = livingRoom;
 
-            backYard.Exits = [frontYard, garden];
-            backYard.DoorLocation = kitchen;
-
-            garden.Exits = [frontYard, backYard];
 
             Random random = new Random();
             opponent = new Opponent(frontYard, random);
