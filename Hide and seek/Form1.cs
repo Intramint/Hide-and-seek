@@ -5,94 +5,147 @@ namespace Hide_and_seek
         public Form1()
         {
             InitializeComponent();
-            CreateObjects();
-        }
-
-        private void CreateObjects()
-        {
-            RoomWithDoor livingRoom = new RoomWithDoor("Salon", "antyczny dywan", "dêbowe drzwi z mosiê¿n¹ klamk¹", "za kanap¹");
-            RoomWithDoor kitchen = new RoomWithDoor("Kuchnia", "nierdzewne stalowe sztuæce", "drzwi rozsuwane", "w szafce");
-            Room diningRoom = new Room("Jadalnia", "kryszta³owy ¿yrandol");
-            OutsideWithDoor frontYard = new OutsideWithDoor("Podwórko przed domem", false, "dêbowe drzwi z mosiê¿n¹ klamk¹", "w krzakach");
-            OutsideWithDoor backYard = new OutsideWithDoor("Podwórko za domem", true, "drzwi rozsuwane", "na drzewie");
-            OutsideWithHidingPlace garden = new OutsideWithHidingPlace("Ogród", false, "w szopie");
-            Room stairs = new Room("Schody", "drewniana porêcz");
-            RoomWithHidingPlace hallway = new RoomWithHidingPlace("Korytarz na górze", "obraz z psem", "w szafie œciennej");
-            RoomWithHidingPlace bigBedroom = new RoomWithHidingPlace("Du¿a sypialnia", "portret", "pod ³ó¿kiem");
-            RoomWithHidingPlace smallBedroom = new RoomWithHidingPlace("Ma³a sypialnia", "pami¹tka z wakacji", "pod ³ó¿kiem");
-            Room bathroom = new Room("£azienka", "lustro z ozdabian¹ ramk¹");
-            OutsideWithHidingPlace driveway = new OutsideWithHidingPlace("Droga dojazdowa", false, "w gara¿u");
-
-
-
-
-            livingRoom.Exits = [diningRoom, stairs];
-            kitchen.Exits = [diningRoom];
-            diningRoom.Exits = [livingRoom, kitchen];
-            frontYard.Exits = [backYard, garden, driveway];
-            backYard.Exits = [frontYard, garden, driveway];
-            garden.Exits = [frontYard, backYard];
-            stairs.Exits = [livingRoom, hallway];
-            hallway.Exits = [stairs, bigBedroom, smallBedroom, bathroom];
-            bigBedroom.Exits = [hallway];
-            smallBedroom.Exits = [hallway];
-            bathroom.Exits = [hallway];
-            driveway.Exits = [frontYard, backYard];
-
-            backYard.DoorLocation = kitchen;
-            kitchen.DoorLocation = backYard;
-            livingRoom.DoorLocation = frontYard;
-            frontYard.DoorLocation = livingRoom;
-
-
-            Random random = new Random();
-            opponent = new Opponent(frontYard, random);
-            for (int i = 0; i < 10; i++)
-                opponent.Move();
-            while (opponent.myLocation is not IHidingPlace)
-                opponent.Move();
-
-            moveToANewLocation(livingRoom);
+            opponentRNG = new Random();
 
         }
 
-        Location currentLocation { get; set; }
-        public Opponent opponent { get; private set; }
 
-        private void moveToANewLocation(Location newLocation)
+        private int countdownTicks;
+        public void startCountdown() //call on button click
         {
-            currentLocation = newLocation;
+            startGameButton.Visible = false; //should also disable controls and enable at endCountdown
+            countdownTicks = 0;
+            countdownTimer.Enabled = true;
+        }
+
+        public void endCountdown()
+        {
+            descriptionTextBox.Text = "Szukam!";
+            WaitWithDisabledControls(500);
+
+            updateForm();
+        }
+
+
+        private Player player;
+        private Game game;
+        private Opponent opponent;
+        private Random opponentRNG;
+
+
+        private void gameEnd()
+        {
+            showEndScreen();
+            goHereButton.Enabled = false;
+            searchRoomButton.Enabled = false;
+            goThroughDoorButton.Enabled = false;
+            exitsComboBox.Enabled = false;
+        }
+
+
+        private void showEndScreen()
+        {
+            IHidingPlace searchedLocation = player.CurrentLocation as IHidingPlace;
+            descriptionTextBox.Text = $"Znalaz³eœ mnie {searchedLocation.HidingPlace} w {player.CurrentLocation.Name}! Zajê³o ci to {player.ActionCounter} ruchów.";
+        }
+
+
+        private void updateForm()
+        {
             exitsComboBox.Items.Clear();
-            foreach (Location location in currentLocation.Exits)
-            {
-                exitsComboBox.Items.Add(location.Name);
-            }
-            exitsComboBox.SelectedIndex = 0;
-            descriptionTextBox.Text = currentLocation.Description;
 
-            if (currentLocation is IHasExteriorDoor)
+            foreach (Location location in player.CurrentLocation.Exits)
+                exitsComboBox.Items.Add(location.Name);
+            exitsComboBox.SelectedIndex = 0;
+            descriptionTextBox.Text = player.CurrentLocation.Description;
+
+
+            if (player.CurrentLocation is IHasExteriorDoor)
                 goThroughDoorButton.Visible = true;
             else
                 goThroughDoorButton.Visible = false;
 
+
+            if (player.CurrentLocation is IHidingPlace)
+            {
+                searchRoomButton.Visible = true;
+                IHidingPlace searchedLocation = player.CurrentLocation as IHidingPlace;
+                searchRoomButton.Text = "SprawdŸ " + searchedLocation.HidingPlace;
+            }
+            else
+                searchRoomButton.Visible = false;
         }
 
-        public bool Check(Location location)
+
+        private void WaitWithDisabledControls(int milliseconds) //change to use timer
         {
-            if (opponent.myLocation == location)
-                return true;
-            return false;
+            toggleControls(false);
+            toggleControlsTimer.Interval = milliseconds;
+            toggleControlsTimer.Enabled = true;
+            timer1_Tick
+            toggleControls(true);
         }
+
+
+        private void toggleControls(bool toggle)
+        {
+            goHereButton.Enabled = toggle;
+            searchRoomButton.Enabled = toggle;
+            goThroughDoorButton.Enabled = toggle;
+            startGameButton.Enabled = toggle;
+            exitsComboBox.Enabled = toggle;
+            descriptionTextBox.Enabled = toggle;
+        }
+
+
+        ///
+        /// Buttons
+        ///
+
 
         private void goHereButton_Click(object sender, EventArgs e)
         {
-            moveToANewLocation(currentLocation.Exits[exitsComboBox.SelectedIndex]);
+            Location exit = player.CurrentLocation.Exits[exitsComboBox.SelectedIndex];
+            player.MoveTo(exit);
+            updateForm();
         }
+
 
         private void goThroughDoorButton_Click(object sender, EventArgs e)
         {
-            IHasExteriorDoor destination = currentLocation as IHasExteriorDoor;
-            moveToANewLocation(destination.DoorLocation);
+            IHasExteriorDoor destination = player.CurrentLocation as IHasExteriorDoor;
+            player.MoveTo(destination.DoorLocation);
+        }
+
+
+        private void searchRoomButton_Click(object sender, EventArgs e)
+        {
+            if (opponent.hiddenHere(player.CurrentLocation))
+                gameEnd();
+            else
+            {
+                string description = descriptionTextBox.Text;
+                descriptionTextBox.Text = "Nikogo tu nie ma";
+                WaitWithDisabledControls(1000);
+                descriptionTextBox.Text = description;
+            }
+        }
+
+
+        private void startGameButton_Click(object sender, EventArgs e)
+        {
+            game = new Game(opponentRNG);
+            opponent = game.Opponent;
+            player = game.Player;
+            game.Start();
+            startCountdown();
+        }
+
+        private void countdownTimer_Tick(object sender, EventArgs e)
+        { 
+            descriptionTextBox.Text = countdownTicks + "...";
+            if (countdownTicks >= 10)
+                endCountdown();
         }
     }
 }
