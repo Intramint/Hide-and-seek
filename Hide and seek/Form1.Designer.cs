@@ -43,9 +43,11 @@
             // descriptionTextBox
             // 
             descriptionTextBox.BorderStyle = BorderStyle.FixedSingle;
+            descriptionTextBox.Enabled = false;
             descriptionTextBox.Location = new Point(12, 12);
             descriptionTextBox.Multiline = true;
             descriptionTextBox.Name = "descriptionTextBox";
+            descriptionTextBox.ReadOnly = true;
             descriptionTextBox.Size = new Size(360, 186);
             descriptionTextBox.TabIndex = 0;
             // 
@@ -105,10 +107,11 @@
             // toggleControlsTimer
             // 
             toggleControlsTimer.Interval = 1000;
-            toggleControlsTimer.Tick += timer1_Tick;
+            toggleControlsTimer.Tick += toggleControlsTimer_Tick;
             // 
             // countdownTimer
             // 
+            countdownTimer.Interval = 300;
             countdownTimer.Tick += countdownTimer_Tick;
             // 
             // Form1

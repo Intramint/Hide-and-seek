@@ -17,10 +17,6 @@ namespace Hide_and_seek
             while (Opponent.MyLocation is not IHidingPlace)
                 Opponent.Move();
         }
-        public void End() //change this to End() and instead of resetting make new instances of Game. move the UI stuff to Form1.cs
-        {       
-            Opponent.MyLocation = StartingLocation;
-        }
 
        
 
@@ -70,21 +66,14 @@ namespace Hide_and_seek
         }
 
 
-        public void Start() //call on button click
+        public void Start()
         {
-            
-            
             for (int i = 1; i <= 10; i++)
             {
                 Opponent.Move();
-
-
             }
             while (Opponent.MyLocation is not IHidingPlace)
                 Opponent.Move();
-
-            moveToANewLocation(StartingLocation);
-            redrawForm();
         }
 
 

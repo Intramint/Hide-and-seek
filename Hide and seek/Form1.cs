@@ -11,19 +11,11 @@ namespace Hide_and_seek
 
 
         private int countdownTicks;
-        public void startCountdown() //call on button click
+        public void startCountdown()
         {
-            startGameButton.Visible = false; //should also disable controls and enable at endCountdown
+            startGameButton.Visible = false;
             countdownTicks = 0;
             countdownTimer.Enabled = true;
-        }
-
-        public void endCountdown()
-        {
-            descriptionTextBox.Text = "Szukam!";
-            WaitWithDisabledControls(500);
-
-            updateForm();
         }
 
 
@@ -36,10 +28,11 @@ namespace Hide_and_seek
         private void gameEnd()
         {
             showEndScreen();
-            goHereButton.Enabled = false;
-            searchRoomButton.Enabled = false;
-            goThroughDoorButton.Enabled = false;
-            exitsComboBox.Enabled = false;
+            goHereButton.Visible = false;
+            searchRoomButton.Visible = false;
+            goThroughDoorButton.Visible = false;
+            exitsComboBox.Visible = false;
+            startGameButton.Visible = true;
         }
 
 
@@ -77,13 +70,11 @@ namespace Hide_and_seek
         }
 
 
-        private void WaitWithDisabledControls(int milliseconds) //change to use timer
+        private void waitWithDisabledControls(int milliseconds)
         {
             toggleControls(false);
             toggleControlsTimer.Interval = milliseconds;
             toggleControlsTimer.Enabled = true;
-            timer1_Tick
-            toggleControls(true);
         }
 
 
@@ -94,7 +85,6 @@ namespace Hide_and_seek
             goThroughDoorButton.Enabled = toggle;
             startGameButton.Enabled = toggle;
             exitsComboBox.Enabled = toggle;
-            descriptionTextBox.Enabled = toggle;
         }
 
 
@@ -115,19 +105,20 @@ namespace Hide_and_seek
         {
             IHasExteriorDoor destination = player.CurrentLocation as IHasExteriorDoor;
             player.MoveTo(destination.DoorLocation);
+            updateForm();
         }
 
 
         private void searchRoomButton_Click(object sender, EventArgs e)
         {
-            if (opponent.hiddenHere(player.CurrentLocation))
+            if (player.SearchCurrentRoom(opponent))
+            {
                 gameEnd();
+            }
             else
             {
-                string description = descriptionTextBox.Text;
                 descriptionTextBox.Text = "Nikogo tu nie ma";
-                WaitWithDisabledControls(1000);
-                descriptionTextBox.Text = description;
+                waitWithDisabledControls(1000);
             }
         }
 
@@ -142,10 +133,33 @@ namespace Hide_and_seek
         }
 
         private void countdownTimer_Tick(object sender, EventArgs e)
-        { 
+        {
+            countdownTicks++;
             descriptionTextBox.Text = countdownTicks + "...";
             if (countdownTicks >= 10)
-                endCountdown();
+            {
+                descriptionTextBox.Text = "Szukam!";
+                if (countdownTicks == 11)
+                {
+                    goHereButton.Visible = true;
+                    exitsComboBox.Visible = true;
+                    updateForm();
+                    countdownTimer.Enabled = false;
+                }
+            }
+        }
+
+        private bool secondTick = false;
+        private void toggleControlsTimer_Tick(object sender, EventArgs e)
+        {
+            if (secondTick)
+            {
+                toggleControlsTimer.Enabled = false;
+                toggleControls(true);
+                secondTick = false;
+                updateForm();
+            }
+            secondTick = true;
         }
     }
 }
