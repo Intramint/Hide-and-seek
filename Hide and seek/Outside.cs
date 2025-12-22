@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Hide_and_seek
 {
-    internal class Outside : Location
+    public class Outside : Location
     {
         public Outside (string name, bool isHot) : base (name)
         {
