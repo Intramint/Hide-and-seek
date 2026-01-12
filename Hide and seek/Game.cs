@@ -8,14 +8,7 @@ namespace Hide_and_seek
     internal class Game
     {
         public Game(Random opponentRNG) {
-            initializeWorld(opponentRNG);
-                       
-            for (int i = 0; i < 10; i++)
-            {
-                Opponent.Move();
-            }
-            while (Opponent.MyLocation is not IHidingPlace)
-                Opponent.Move();
+            initializeWorld(opponentRNG);    
         }
 
        
@@ -68,12 +61,12 @@ namespace Hide_and_seek
 
         public void Start()
         {
-            for (int i = 1; i <= 10; i++)
+            int i = 0;
+            while (Opponent.MyLocation is not IHidingPlace || i < 10)
             {
                 Opponent.Move();
+                i++;
             }
-            while (Opponent.MyLocation is not IHidingPlace)
-                Opponent.Move();
         }
 
 

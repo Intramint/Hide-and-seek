@@ -38,8 +38,7 @@ namespace Hide_and_seek
 
         private void showEndScreen()
         {
-            IHidingPlace searchedLocation = player.CurrentLocation as IHidingPlace;
-            descriptionTextBox.Text = $"Znalaz³eœ mnie {searchedLocation.HidingPlace} w {player.CurrentLocation.Name}! Zajê³o ci to {player.ActionCounter} ruchów.";
+            descriptionTextBox.Text = $"Znalaz³eœ mnie {opponent.myHidingPlace} w {player.CurrentLocation.Name}! Zajê³o ci to {player.ActionCounter} ruchów.";
         }
 
 
@@ -59,10 +58,10 @@ namespace Hide_and_seek
                 goThroughDoorButton.Visible = false;
 
 
-            if (player.CurrentLocation is IHidingPlace)
+            if (player.CurrentLocation is IHidingPlace searchedLocation)
             {
                 searchRoomButton.Visible = true;
-                IHidingPlace searchedLocation = player.CurrentLocation as IHidingPlace;
+                //searchedLocation = player.CurrentLocation as IHidingPlace;
                 searchRoomButton.Text = "SprawdŸ " + searchedLocation.HidingPlace;
             }
             else
@@ -103,7 +102,11 @@ namespace Hide_and_seek
 
         private void goThroughDoorButton_Click(object sender, EventArgs e)
         {
-            IHasExteriorDoor destination = player.CurrentLocation as IHasExteriorDoor;
+            if (player.CurrentLocation is not IHasExteriorDoor destination)
+            {
+                descriptionTextBox.Text = "Nie ma tutaj drzwi";
+                return;
+            }
             player.MoveTo(destination.DoorLocation);
             updateForm();
         }

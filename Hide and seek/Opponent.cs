@@ -14,20 +14,28 @@ namespace Hide_and_seek
         }
 
         public Location MyLocation;
+        public string myHidingPlace 
+        { get
+            {
+                if (MyLocation is IHidingPlace)
+                {
+                    IHidingPlace door = MyLocation as IHidingPlace;
+                    return door.HidingPlace;
+                }
+                else return "na środku pokoju";
+            }
+        }
         private Random random;
 
         public void Move()
         {
             int roll = random.Next(2);
-            if (MyLocation is IHasExteriorDoor)
+            if (MyLocation is IHasExteriorDoor && roll == 1)
             {
-                if (roll == 1)
-                { //go through door
-                    IHasExteriorDoor locationWithDoor = MyLocation as IHasExteriorDoor;
-                    MyLocation = locationWithDoor.DoorLocation;
-                    return;
-                }
-                
+                 //go through door
+                IHasExteriorDoor locationWithDoor = MyLocation as IHasExteriorDoor;
+                MyLocation = locationWithDoor.DoorLocation;
+                return;   
             }
             roll = random.Next(MyLocation.Exits.Length);
             MyLocation = MyLocation.Exits[roll];
